@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Submit Insurance Claim</h2>
+    
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5>Claim Details</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="policy" class="form-label">Select Policy</label>
+                    <select class="form-select" id="policy" name="policy" required>
+                        <option value="">-- Select Policy --</option>
+                        {% for policy in user.policy_set.all %}
+                        <option value="{{ policy.id }}">{{ policy.get_policy_type_display }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="incident_date" class="form-label">Date of Incident</label>
+                    <input type="date" class="form-control" id="incident_date" name="incident_date" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description of Loss</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="police_report" class="form-label">Police Report (if available)</label>
+                    <input type="file" class="form-control" id="police_report" name="police_report">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="photo" class="form-label">Upload Photos as Proof</label>
+                    <input type="file" class="form-control" id="photo" name="photo" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit Claim</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

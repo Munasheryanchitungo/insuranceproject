@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Insurance Products</h2>
+    <div class="alert alert-info">
+        <strong>Note:</strong> Premiums vary based on coverage type and business risk level
+    </div>
+
+    <div class="row">
+        <!-- Fire Cover -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-danger text-white">
+                    <h5>Fire Cover</h5>
+                </div>
+                <div class="card-body">
+                    <h4>$2/month</h4>
+                    <p>Covers fire damage to your property/business</p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <form method="post" action="{% url 'subscribe_policy' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="policy_type" value="fire">
+                        <button type="submit" class="btn btn-danger w-100">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Theft Protection -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-warning text-dark">
+                    <h5>Theft Protection</h5>
+                </div>
+                <div class="card-body">
+                    <h4>$2.50/month</h4>
+                    <p>Covers theft of business assets</p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <form method="post" action="{% url 'subscribe_policy' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="policy_type" value="theft">
+                        <button type="submit" class="btn btn-warning w-100">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comprehensive -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5>Comprehensive</h5>
+                </div>
+                <div class="card-body">
+                    <h4>$6/month</h4>
+                    <p>Covers both fire damage and theft</p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <form method="post" action="{% url 'subscribe_policy' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="policy_type" value="comprehensive">
+                        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Microinsurance -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5>Health Microinsurance</h5>
+                </div>
+                <div class="card-body">
+                    <h4>$5/month</h4>
+                    <p>Covers hospitalization and outpatient care</p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <form method="post" action="{% url 'subscribe_policy' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="policy_type" value="health">
+                        <button type="submit" class="btn btn-success w-100">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

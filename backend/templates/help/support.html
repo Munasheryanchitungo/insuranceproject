@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h3>Help & Support</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Contact Our Team</h5>
+                    <div class="row mt-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-whatsapp fs-1 text-success mb-3"></i>
+                                    <h5>WhatsApp</h5>
+                                    <p>+237 XXX XXX XXX</p>
+                                    <a href="https://wa.me/237XXXXXXXXX" class="btn btn-outline-success">Chat Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-envelope fs-1 text-primary mb-3"></i>
+                                    <h5>Email</h5>
+                                    <p>support@shalominsuresmart.com</p>
+                                    <a href="mailto:support@shalominsuresmart.com" class="btn btn-outline-primary">Send Email</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-telephone fs-1 text-secondary mb-3"></i>
+                                    <h5>Phone</h5>
+                                    <p>+237 XXX XXX XXX</p>
+                                    <a href="tel:+237XXXXXXXXX" class="btn btn-outline-secondary">Call Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

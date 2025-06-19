@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-header mb-5">
+    <h2>Hello, {{ user.username }}!</h2>
+    <p class="text-muted">Welcome to your insurance dashboard</p>
+</div>
+
+<div class="row">
+    <!-- Active Policies Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <h5>Your Active Policies</h5>
+            </div>
+            <div class="card-body">
+                {% if user.policy_set.all %}
+                <ul class="list-group">
+                    {% for policy in user.policy_set.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ policy.get_policy_type_display }}
+                        <span class="badge bg-{% if policy.is_active %}success{% else %}warning{% endif %}">
+                            {% if policy.is_active %}Active{% else %}Expired{% endif %}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No active policies. <a href="{% url 'policy_list' %}">Get coverage now!</a></p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'policy_list' %}" class="btn btn-primary btn-sm">Add Policy</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Claim Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white">
+                <h5>Submit Claim</h5>
+            </div>
+            <div class="card-body">
+                <p>File a claim for your active policies</p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'submit_claim' %}" class="btn btn-success btn-sm">Start Claim</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-info text-white">
+                <h5>Help & Support</h5>
+            </div>
+            <div class="card-body">
+                <p>Need assistance? Contact our team</p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'support' %}" class="btn btn-info btn-sm">Get Help</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

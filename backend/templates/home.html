@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="hero-section text-center py-5 bg-light">
+    <img src="{% static 'images/logo.png' %}" alt="Logo" class="mb-4" width="150">
+    <h1 class="display-4">Welcome to Shalom InsureSmart</h1>
+    <p class="lead">Affordable micro insurance for everyday traders</p>
+    <a href="{% url 'register' %}" class="btn btn-primary btn-lg mt-3">Get Started</a>
+</div>
+
+<div class="container my-5">
+    <!-- Mission/Vision sections from earlier -->
+</div>
+{% endblock %}
