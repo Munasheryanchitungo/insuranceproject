@@ -5,4 +5,4 @@ whitenoise
 crispy-bootstrap5
 django-crispy-forms
 django-jet
-jazzmin
+django-jazzmin
