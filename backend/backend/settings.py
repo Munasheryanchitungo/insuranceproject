@@ -28,9 +28,9 @@ INSTALLED_APPS = [
     # Local apps
     'users.apps.UsersConfig',
     'policies.apps.PoliciesConfig',
-    'backend.claims.apps.ClaimsConfig',
-    'backend.payments.apps.PaymentsConfig',
-    'backend.help.apps.HelpConfig',
+    'laims.apps.ClaimsConfig',
+    'payments.apps.PaymentsConfig',
+    'help.apps.HelpConfig',
 ]
 
 MIDDLEWARE = [
@@ -43,7 +43,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'backend.backend.urls'
+ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
     {
