@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     # Local apps
     'users.apps.UsersConfig',
     'policies.apps.PoliciesConfig',
-    'laims.apps.ClaimsConfig',
+    'claims.apps.ClaimsConfig',
     'payments.apps.PaymentsConfig',
     'help.apps.HelpConfig',
 ]
