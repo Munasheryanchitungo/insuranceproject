@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 
 import os
 import sys
-from pathlib import Pathimport 
+from pathlib import Path 
 # Add project root to Python path
 BASE_DIR = Path(__file__).parent.parent
 sys.path.append(str(BASE_DIR))
