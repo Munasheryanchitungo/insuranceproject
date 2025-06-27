@@ -27,10 +27,10 @@ INSTALLED_APPS = [
     
     # Local apps
     'backend.users.apps.UsersConfig',
-    'policies.apps.PoliciesConfig',
-    'claims.apps.ClaimsConfig',
-    'payments.apps.PaymentsConfig',
-    'help.apps.HelpConfig',
+    'backend.policies.apps.PoliciesConfig',
+    'backend.claims.apps.ClaimsConfig',
+    'backend.payments.apps.PaymentsConfig',
+    'backend.help.apps.HelpConfig',
 ]
 
 MIDDLEWARE = [
