@@ -26,8 +26,8 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     
     # Local apps
-    'backend.users.apps.UsersConfig',
-    'backend.policies.apps.PoliciesConfig',
+    'users.apps.UsersConfig',
+    'policies.apps.PoliciesConfig',
     'backend.claims.apps.ClaimsConfig',
     'backend.payments.apps.PaymentsConfig',
     'backend.help.apps.HelpConfig',
