@@ -6,4 +6,4 @@ crispy-bootstrap5
 django-crispy-forms
 django-jet
 django-jazzmin
-django-grappelli
+
