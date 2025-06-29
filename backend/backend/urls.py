@@ -13,7 +13,6 @@ def create_superuser(request):
     return HttpResponse("Superuser already exists")
 
 urlpatterns = [
-    path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
     path('policies/', include('policies.urls')),
