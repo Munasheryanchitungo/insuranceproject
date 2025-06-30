@@ -8,6 +8,53 @@
         <strong>Note:</strong> Premiums vary based on coverage type and business risk level
     </div>
 
+    <!-- Payment Modal (add this at the top of your content block) -->
+    <div id="paymentModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="policyModalLabel">Complete Your Subscription</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="paymentForm">
+                        <div class="form-group">
+                            <label>Card Number</label>
+                            <input type="text" class="form-control" placeholder="4242 4242 4242 4242" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Expiration Date</label>
+                            <input type="text" class="form-control" placeholder="MM/YY" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CVC</label>
+                            <input type="text" class="form-control" placeholder="123" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Name on Card</label>
+                            <input type="text" class="form-control" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" placeholder="your@email.com" required>
+                        </div>
+                        <div id="paymentAmount" class="mb-3 font-weight-bold"></div>
+                        <button type="submit" class="btn btn-primary w-100">Complete Payment</button>
+                    </form>
+                    <div id="successMessage" style="display:none;">
+                        <div class="alert alert-success">
+                            <h4><i class="fas fa-check-circle"></i> Payment Successful!</h4>
+                            <p>Your subscription has been activated. A confirmation has been sent to your email.</p>
+                        </div>
+                        <button id="closeModal" class="btn btn-secondary w-100" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <!-- Fire Cover -->
         <div class="col-md-3 mb-4">
@@ -20,11 +67,8 @@
                     <p>Covers fire damage to your property/business</p>
                 </div>
                 <div class="card-footer bg-transparent">
-                    <form method="post" action="{% url 'subscribe_policy' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="policy_type" value="fire">
-                        <button type="submit" class="btn btn-danger w-100">Subscribe</button>
-                    </form>
+                    <button type="button" class="btn btn-danger w-100 subscribe-btn" 
+                            data-policy="fire" data-amount="2">Subscribe</button>
                 </div>
             </div>
         </div>
@@ -40,11 +84,8 @@
                     <p>Covers theft of business assets</p>
                 </div>
                 <div class="card-footer bg-transparent">
-                    <form method="post" action="{% url 'subscribe_policy' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="policy_type" value="theft">
-                        <button type="submit" class="btn btn-warning w-100">Subscribe</button>
-                    </form>
+                    <button type="button" class="btn btn-warning w-100 subscribe-btn" 
+                            data-policy="theft" data-amount="2.50">Subscribe</button>
                 </div>
             </div>
         </div>
@@ -60,11 +101,8 @@
                     <p>Covers both fire damage and theft</p>
                 </div>
                 <div class="card-footer bg-transparent">
-                    <form method="post" action="{% url 'subscribe_policy' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="policy_type" value="comprehensive">
-                        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
-                    </form>
+                    <button type="button" class="btn btn-primary w-100 subscribe-btn" 
+                            data-policy="comprehensive" data-amount="6">Subscribe</button>
                 </div>
             </div>
         </div>
@@ -80,14 +118,57 @@
                     <p>Covers hospitalization and outpatient care</p>
                 </div>
                 <div class="card-footer bg-transparent">
-                    <form method="post" action="{% url 'subscribe_policy' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="policy_type" value="health">
-                        <button type="submit" class="btn btn-success w-100">Subscribe</button>
-                    </form>
+                    <button type="button" class="btn btn-success w-100 subscribe-btn" 
+                            data-policy="health" data-amount="5">Subscribe</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // When any subscribe button is clicked
+    $('.subscribe-btn').click(function() {
+        const policyType = $(this).data('policy');
+        const amount = $(this).data('amount');
+        
+        // Update the modal with policy info
+        $('#policyModalLabel').text('Subscribe to ' + policyType.charAt(0).toUpperCase() + policyType.slice(1));
+        $('#paymentAmount').text('Amount to pay: $' + amount + '/month');
+        
+        // Show the modal
+        $('#paymentModal').modal('show');
+    });
+    
+    // Handle form submission
+    $('#paymentForm').submit(function(e) {
+        e.preventDefault();
+        
+        // Show processing animation (optional)
+        $(this).find('button[type="submit"]').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...');
+        
+        // Simulate payment processing delay
+        setTimeout(function() {
+            $('#paymentForm').hide();
+            $('#successMessage').show();
+        }, 1500);
+    });
+    
+    // Reset modal when closed
+    $('#paymentModal').on('hidden.bs.modal', function () {
+        $('#paymentForm').show();
+        $('#successMessage').hide();
+        $('#paymentForm')[0].reset();
+        $('#paymentForm button[type="submit"]').text('Complete Payment');
+    });
+    
+    // Close modal when success button is clicked
+    $('#closeModal').click(function() {
+        $('#paymentModal').modal('hide');
+    });
+});
+</script>
 {% endblock %}
