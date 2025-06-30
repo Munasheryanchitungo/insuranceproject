@@ -8,47 +8,47 @@
         <strong>Note:</strong> Premiums vary based on coverage type and business risk level
     </div>
 
-    <!-- Payment Modal (add this at the top of your content block) -->
-    <div id="paymentModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <!-- Payment Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="policyModalLabel">Complete Your Subscription</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="paymentModalLabel">Complete Your Subscription</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="paymentForm">
-                        <div class="form-group">
-                            <label>Card Number</label>
-                            <input type="text" class="form-control" placeholder="4242 4242 4242 4242" required>
+                        <div class="mb-3">
+                            <label for="cardNumber" class="form-label">Card Number</label>
+                            <input type="text" class="form-control" id="cardNumber" placeholder="4242 4242 4242 4242" required>
                         </div>
-                        <div class="form-group">
-                            <label>Expiration Date</label>
-                            <input type="text" class="form-control" placeholder="MM/YY" required>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="expDate" class="form-label">Expiration Date</label>
+                                <input type="text" class="form-control" id="expDate" placeholder="MM/YY" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cvc" class="form-label">CVC</label>
+                                <input type="text" class="form-control" id="cvc" placeholder="123" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>CVC</label>
-                            <input type="text" class="form-control" placeholder="123" required>
+                        <div class="mb-3">
+                            <label for="cardName" class="form-label">Name on Card</label>
+                            <input type="text" class="form-control" id="cardName" placeholder="John Doe" required>
                         </div>
-                        <div class="form-group">
-                            <label>Name on Card</label>
-                            <input type="text" class="form-control" placeholder="John Doe" required>
+                        <div class="mb-4">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="your@email.com" required>
                         </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" class="form-control" placeholder="your@email.com" required>
-                        </div>
-                        <div id="paymentAmount" class="mb-3 font-weight-bold"></div>
+                        <div id="paymentAmount" class="mb-3 fw-bold"></div>
                         <button type="submit" class="btn btn-primary w-100">Complete Payment</button>
                     </form>
-                    <div id="successMessage" style="display:none;">
+                    <div id="successMessage" class="d-none">
                         <div class="alert alert-success">
-                            <h4><i class="fas fa-check-circle"></i> Payment Successful!</h4>
+                            <h4><i class="bi bi-check-circle-fill"></i> Payment Successful!</h4>
                             <p>Your subscription has been activated. A confirmation has been sent to your email.</p>
                         </div>
-                        <button id="closeModal" class="btn btn-secondary w-100" data-dismiss="modal">Close</button>
+                        <button class="btn btn-secondary w-100" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -129,45 +129,62 @@
 
 {% block extra_js %}
 <script>
-$(document).ready(function() {
-    // When any subscribe button is clicked
-    $('.subscribe-btn').click(function() {
-        const policyType = $(this).data('policy');
-        const amount = $(this).data('amount');
-        
-        // Update the modal with policy info
-        $('#policyModalLabel').text('Subscribe to ' + policyType.charAt(0).toUpperCase() + policyType.slice(1));
-        $('#paymentAmount').text('Amount to pay: $' + amount + '/month');
-        
-        // Show the modal
-        $('#paymentModal').modal('show');
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize modal
+    const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+    const paymentForm = document.getElementById('paymentForm');
+    const successMessage = document.getElementById('successMessage');
+    const paymentAmount = document.getElementById('paymentAmount');
+    const modalTitle = document.getElementById('paymentModalLabel');
+    
+    // Add click event to all subscribe buttons
+    document.querySelectorAll('.subscribe-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const policyType = this.getAttribute('data-policy');
+            const amount = this.getAttribute('data-amount');
+            
+            // Format policy type for display
+            const formattedPolicy = policyType === 'health' ? 'Health Microinsurance' 
+                : policyType.charAt(0).toUpperCase() + policyType.slice(1);
+            
+            // Update modal content
+            modalTitle.textContent = `Subscribe to ${formattedPolicy}`;
+            paymentAmount.textContent = `Amount to pay: $${amount}/month`;
+            
+            // Show modal
+            paymentModal.show();
+        });
     });
     
     // Handle form submission
-    $('#paymentForm').submit(function(e) {
+    paymentForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Show processing animation (optional)
-        $(this).find('button[type="submit"]').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...');
+        const submitButton = this.querySelector('button[type="submit"]');
         
-        // Simulate payment processing delay
-        setTimeout(function() {
-            $('#paymentForm').hide();
-            $('#successMessage').show();
-        }, 1500);
+        // Show loading state
+        submitButton.disabled = true;
+        submitButton.innerHTML = `
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Processing...
+        `;
+        
+        // Simulate payment processing
+        setTimeout(() => {
+            paymentForm.classList.add('d-none');
+            successMessage.classList.remove('d-none');
+            
+            // Reset button state (though it's hidden now)
+            submitButton.disabled = false;
+            submitButton.textContent = 'Complete Payment';
+        }, 2000);
     });
     
     // Reset modal when closed
-    $('#paymentModal').on('hidden.bs.modal', function () {
-        $('#paymentForm').show();
-        $('#successMessage').hide();
-        $('#paymentForm')[0].reset();
-        $('#paymentForm button[type="submit"]').text('Complete Payment');
-    });
-    
-    // Close modal when success button is clicked
-    $('#closeModal').click(function() {
-        $('#paymentModal').modal('hide');
+    document.getElementById('paymentModal').addEventListener('hidden.bs.modal', function() {
+        paymentForm.reset();
+        paymentForm.classList.remove('d-none');
+        successMessage.classList.add('d-none');
     });
 });
 </script>
