@@ -1,15 +1,32 @@
-{% extends "base.html" %}
+{{% extends "base.html" %}
 {% load static %}
 
 {% block content %}
-<div class="hero-section text-center py-5 bg-light">
-    <img src="{% static 'images/logo.png' %}" alt="Logo" class="mb-4" width="150">
-    <h1 class="display-4">Welcome to Shalom InsureSmart</h1>
-    <p class="lead">Affordable micro insurance for everyday traders</p>
-    <a href="{% url 'register' %}" class="btn btn-primary btn-lg mt-3">Get Started</a>
+<div class="hero-section text-center py-5" style="background: url('{% static 'images/bg-home.jpg' %}') no-repeat center center; background-size: cover;">
+    <!-- Logo with multiple fallback options -->
+    <picture class="d-block mb-4">
+        <!-- Try WebP first if available -->
+        <source srcset="{% static 'images/insuresmart-logo.webp' %}" type="image/webp">
+        <!-- Fallback to PNG -->
+        <source srcset="{% static 'images/insuresmart-logo.png' %}" type="image/png">
+        <!-- Final fallback to JPG -->
+        <img src="{% static 'images/login-logo.jpg' %}" 
+             alt="Shalom InsureSmart Logo"
+             class="img-fluid"
+             style="max-height: 120px; width: auto;"
+             onerror="this.src='{% static 'images/pic-1.png' %}'">
+    </picture>
+
+    <h1 class="display-4 text-white bg-dark bg-opacity-75 d-inline-block px-3 py-2 rounded">Welcome to Shalom InsureSmart</h1>
+    <p class="lead text-white bg-dark bg-opacity-75 d-inline-block px-2 rounded">Affordable micro insurance for everyday traders</p>
+    <div class="mt-4">
+        <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-4 py-2">
+            <i class="bi bi-arrow-right-circle me-2"></i>Get Started
+        </a>
+    </div>
 </div>
 
 <div class="container my-5">
-    <!-- Mission/Vision sections from earlier -->
+    <!-- Your content sections -->
 </div>
 {% endblock %}
