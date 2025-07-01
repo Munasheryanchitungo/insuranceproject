@@ -15,7 +15,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 INSTALLED_APPS = [
     'jazzmin',
-    'django.contrib.postgres',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -66,11 +65,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
-# Replace your DATABASES section with:
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),  # Auto-detects PostgreSQL
-        conn_max_age=600  # Optional: improves performance
+        default=os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
     )
 }
 
