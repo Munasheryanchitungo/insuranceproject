@@ -15,5 +15,8 @@ class Policy(models.Model):
     end_date = models.DateField()
     is_active = models.BooleanField(default=True)
     
+    class Meta:
+        app_label = 'policies'
+    
     def __str__(self):
         return f"{self.get_policy_type_display()} Policy"
