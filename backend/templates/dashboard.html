@@ -8,60 +8,58 @@
 </div>
 
 <div class="row">
-    <!-- Active Policies Card -->
-    <div class="col-md-4 mb-4">
+    <!-- Active Policies Card - Enhanced -->
+    <div class="col-md-6 mb-4">
         <div class="card h-100">
             <div class="card-header bg-primary text-white">
                 <h5>Your Active Policies</h5>
             </div>
             <div class="card-body">
-                {% if user.policy_set.all %}
-                <ul class="list-group">
-                    {% for policy in user.policy_set.all %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ policy.get_policy_type_display }}
-                        <span class="badge bg-{% if policy.is_active %}success{% else %}warning{% endif %}">
-                            {% if policy.is_active %}Active{% else %}Expired{% endif %}
-                        </span>
-                    </li>
+                {% if active_policies %}
+                <div class="list-group">
+                    {% for policy in active_policies %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ policy.get_policy_type_display }}</h6>
+                            <small>Policy #{{ policy.id }}</small>
+                        </div>
+                        <p class="mb-1">
+                            <strong>Start Date:</strong> {{ policy.start_date|date:"M d, Y" }}<br>
+                            <strong>End Date:</strong> {{ policy.end_date|date:"M d, Y" }}<br>
+                            <strong>Status:</strong> 
+                            <span class="badge bg-{% if policy.is_active %}success{% else %}warning{% endif %}">
+                                {% if policy.is_active %}Active{% else %}Expired{% endif %}
+                            </span>
+                        </p>
+                    </div>
                     {% endfor %}
-                </ul>
+                </div>
                 {% else %}
-                <p>No active policies. <a href="{% url 'policy_list' %}">Get coverage now!</a></p>
+                <div class="alert alert-info">
+                    No active policies. <a href="{% url 'policy_list' %}" class="alert-link">Get coverage now!</a>
+                </div>
                 {% endif %}
             </div>
             <div class="card-footer">
-                <a href="{% url 'policy_list' %}" class="btn btn-primary btn-sm">Add Policy</a>
+                <a href="{% url 'policy_list' %}" class="btn btn-primary">Add Policy</a>
             </div>
         </div>
     </div>
 
-    <!-- Submit Claim Card -->
-    <div class="col-md-4 mb-4">
+    <!-- Quick Actions Card -->
+    <div class="col-md-6 mb-4">
         <div class="card h-100">
             <div class="card-header bg-success text-white">
-                <h5>Submit Claim</h5>
+                <h5>Quick Actions</h5>
             </div>
             <div class="card-body">
-                <p>File a claim for your active policies</p>
-            </div>
-            <div class="card-footer">
-                <a href="{% url 'submit_claim' %}" class="btn btn-success btn-sm">Start Claim</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Help Card -->
-    <div class="col-md-4 mb-4">
-        <div class="card h-100">
-            <div class="card-header bg-info text-white">
-                <h5>Help & Support</h5>
-            </div>
-            <div class="card-body">
-                <p>Need assistance? Contact our team</p>
-            </div>
-            <div class="card-footer">
-                <a href="{% url 'support' %}" class="btn btn-info btn-sm">Get Help</a>
+                <div class="d-grid gap-2">
+                    {% if active_policies %}
+                    <a href="#" class="btn btn-success">File a Claim</a>
+                    {% endif %}
+                    <a href="{% url 'policy_list' %}" class="btn btn-outline-primary">Browse Policies</a>
+                    <a href="#" class="btn btn-outline-secondary">Contact Support</a>
+                </div>
             </div>
         </div>
     </div>
