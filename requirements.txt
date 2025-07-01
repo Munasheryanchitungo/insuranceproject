@@ -6,4 +6,4 @@ crispy-bootstrap5
 django-crispy-forms
 django-jet
 django-jazzmin
-
+psycopg2-binary dj-database-url
