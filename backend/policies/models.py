@@ -15,6 +15,7 @@ class Policy(models.Model):
     end_date = models.DateField()
     is_active = models.BooleanField(default=True)
     
+    
     class Meta:
         verbose_name_plural = "Policies"
     
