@@ -1,15 +1,21 @@
+# payments/views.py
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-import random
-import string
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json, random, string
+from datetime import datetime, timedelta
+from policies.models import Policy
+from .models import Payment
 
+@csrf_exempt
 @login_required
-def process_payment(request):
+def process_payment_api(request):
     if request.method == 'POST':
-        policy_type = request.POST.get('policy_type')
+        data = json.loads(request.body)
+        policy_type = data.get('policy_type')
         
-        # Get policy price
         prices = {
             'fire': 2,
             'theft': 2.5,
@@ -18,17 +24,17 @@ def process_payment(request):
         }
         amount = prices.get(policy_type, 0)
         
-        # Create policy (import here to avoid circular import)
-        from policies.models import Policy
+        # Create policy
         policy = Policy.objects.create(
             user=request.user,
             policy_type=policy_type,
-            is_active=False
+            start_date=datetime.now(),
+            end_date=datetime.now() + timedelta(days=30),
+            is_active=True
         )
         
-        # Create payment
+        # Create payment record
         transaction_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
-        from .models import Payment
         Payment.objects.create(
             user=request.user,
             policy_id=policy.id,
@@ -38,7 +44,10 @@ def process_payment(request):
             is_successful=True
         )
         
-        messages.success(request, f'Payment successful! Policy #{policy.id} activated.')
-        return redirect('policy_list')
+        return JsonResponse({
+            'status': 'success',
+            'message': f'Payment completed. {policy.get_policy_type_display()} policy activated.',
+            'policy_id': policy.id
+        })
     
-    return redirect('policy_list')
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
