@@ -5,7 +5,6 @@ from django.conf.urls.static import static
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 
-
 def create_superuser(request):
     User = get_user_model()
     if not User.objects.filter(username="admin").exists():
@@ -17,7 +16,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
     path('policies/', include('policies.urls')),
-    path('policies/subscribe/', subscribe_policy, name='subscribe_policy'),
     path('claims/', include('claims.urls')),
     path('payments/', include('payments.urls')),
     path('help/', include('help.urls')),
