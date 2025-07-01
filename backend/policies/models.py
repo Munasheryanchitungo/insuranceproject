@@ -8,15 +8,13 @@ class Policy(models.Model):
         ('comprehensive', 'Comprehensive'),
         ('health', 'Health Microinsurance'),
     ]
-    
+class Meta:
+    app_label = 'policies'  # THIS IS THE CRITICAL ADDITION    
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     policy_type = models.CharField(max_length=20, choices=POLICY_TYPES)
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField()
     is_active = models.BooleanField(default=True)
-    
-    class Meta:
-        verbose_name_plural = "Policies"
     
     def __str__(self):
         return f"{self.get_policy_type_display()} Policy"
