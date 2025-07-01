@@ -2,178 +2,68 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
-    <h2 class="mb-4">Insurance Products</h2>
-    <div class="alert alert-info">
-        <strong>Note:</strong> Premiums vary based on coverage type and business risk level
-    </div>
+<div class="dashboard-header mb-5">
+    <h2>Hello, {{ user.username }}!</h2>
+    <p class="text-muted">Welcome to your insurance dashboard</p>
+</div>
 
-    <!-- Payment Modal -->
-    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="paymentModalLabel">Complete Your Subscription</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="paymentForm">
-                        <div class="mb-3">
-                            <label for="cardNumber" class="form-label">Card Number</label>
-                            <input type="text" class="form-control" id="cardNumber" required>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="expDate" class="form-label">Expiration Date</label>
-                                <input type="text" class="form-control" id="expDate" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="cvc" class="form-label">CVC</label>
-                                <input type="text" class="form-control" id="cvc" required>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="cardName" class="form-label">Name on Card</label>
-                            <input type="text" class="form-control" id="cardName" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" required>
-                        </div>
-                        <div id="paymentAmount" class="mb-3 fw-bold"></div>
-                        <button type="submit" class="btn btn-primary w-100">Complete Payment</button>
-                    </form>
-                    <div id="successMessage" class="d-none">
-                        <div class="alert alert-success">
-                            <h4><i class="bi bi-check-circle-fill"></i> Payment Successful!</h4>
-                            <p>Your subscription has been activated. A confirmation has been sent to your email.</p>
-                        </div>
-                        <button class="btn btn-secondary w-100" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
+<div class="row">
+    <!-- Active Policies Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <h5>Your Active Policies</h5>
+            </div>
+            <div class="card-body">
+                {% if user.policy_set.all %}
+                <ul class="list-group">
+                    {% for policy in user.policy_set.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ policy.get_policy_type_display }}
+                        <span class="badge bg-{% if policy.is_active %}success{% else %}warning{% endif %}">
+                            {% if policy.is_active %}Active{% else %}Expired{% endif %}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No active policies. <a href="{% url 'policy_list' %}">Get coverage now!</a></p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'policy_list' %}" class="btn btn-primary btn-sm">Add Policy</a>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <!-- Fire Cover -->
-        <div class="col-md-3 mb-4">
-            <div class="card h-100">
-                <div class="card-header bg-danger text-white"><h5>Fire Cover</h5></div>
-                <div class="card-body"><h4>$2/month</h4><p>Covers fire damage</p></div>
-                <div class="card-footer bg-transparent">
-                    <button type="button" class="btn btn-danger w-100 subscribe-btn" data-policy="fire" data-amount="2">Subscribe</button>
-                </div>
+    <!-- Submit Claim Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white">
+                <h5>Submit Claim</h5>
+            </div>
+            <div class="card-body">
+                <p>File a claim for your active policies</p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'submit_claim' %}" class="btn btn-success btn-sm">Start Claim</a>
             </div>
         </div>
-        <!-- Theft -->
-        <div class="col-md-3 mb-4">
-            <div class="card h-100">
-                <div class="card-header bg-warning text-dark"><h5>Theft Protection</h5></div>
-                <div class="card-body"><h4>$2.50/month</h4><p>Covers theft</p></div>
-                <div class="card-footer bg-transparent">
-                    <button type="button" class="btn btn-warning w-100 subscribe-btn" data-policy="theft" data-amount="2.5">Subscribe</button>
-                </div>
+    </div>
+
+    <!-- Help Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-info text-white">
+                <h5>Help & Support</h5>
             </div>
-        </div>
-        <!-- Comprehensive -->
-        <div class="col-md-3 mb-4">
-            <div class="card h-100">
-                <div class="card-header bg-primary text-white"><h5>Comprehensive</h5></div>
-                <div class="card-body"><h4>$6/month</h4><p>Covers fire + theft</p></div>
-                <div class="card-footer bg-transparent">
-                    <button type="button" class="btn btn-primary w-100 subscribe-btn" data-policy="comprehensive" data-amount="6">Subscribe</button>
-                </div>
+            <div class="card-body">
+                <p>Need assistance? Contact our team</p>
             </div>
-        </div>
-        <!-- Health -->
-        <div class="col-md-3 mb-4">
-            <div class="card h-100">
-                <div class="card-header bg-success text-white"><h5>Health Microinsurance</h5></div>
-                <div class="card-body"><h4>$5/month</h4><p>Health coverage</p></div>
-                <div class="card-footer bg-transparent">
-                    <button type="button" class="btn btn-success w-100 subscribe-btn" data-policy="health" data-amount="5">Subscribe</button>
-                </div>
+            <div class="card-footer">
+                <a href="{% url 'support' %}" class="btn btn-info btn-sm">Get Help</a>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
-    const paymentForm = document.getElementById('paymentForm');
-    const successMessage = document.getElementById('successMessage');
-    const paymentAmount = document.getElementById('paymentAmount');
-    const modalTitle = document.getElementById('paymentModalLabel');
-    let selectedPolicy = "";
-
-    document.querySelectorAll('.subscribe-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            selectedPolicy = this.getAttribute('data-policy');
-            const amount = this.getAttribute('data-amount');
-            modalTitle.textContent = `Subscribe to ${selectedPolicy.charAt(0).toUpperCase() + selectedPolicy.slice(1)}`;
-            paymentAmount.textContent = `Amount to pay: $${amount}/month`;
-            paymentModal.show();
-        });
-    });
-
-    paymentForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const submitButton = this.querySelector('button[type="submit"]');
-        submitButton.disabled = true;
-        submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...`;
-        
-        fetch("/payments/api/process_payment/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": getCookie('csrftoken')
-            },
-            body: JSON.stringify({ policy_type: selectedPolicy })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                paymentForm.classList.add('d-none');
-                successMessage.classList.remove('d-none');
-                setTimeout(() => window.location.reload(), 2000);
-            } else {
-                alert("Payment failed: " + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Unexpected error occurred.');
-        })
-        .finally(() => {
-            submitButton.disabled = false;
-            submitButton.textContent = 'Complete Payment';
-        });
-    });
-
-    document.getElementById('paymentModal').addEventListener('hidden.bs.modal', function() {
-        paymentForm.reset();
-        paymentForm.classList.remove('d-none');
-        successMessage.classList.add('d-none');
-    });
-
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let cookie of cookies) {
-                cookie = cookie.trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-});
-</script>
 {% endblock %}
