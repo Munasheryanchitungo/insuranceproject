@@ -6,5 +6,4 @@ crispy-bootstrap5
 django-crispy-forms
 django-jet
 django-jazzmin
-dj-database-url==2.1.0
-psycopg==3.1.18
+
