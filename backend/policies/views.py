@@ -37,4 +37,4 @@ def subscribe_policy(request):
             is_active=True
         )
         messages.success(request, 'Policy subscribed successfully!')
-    return redirect('policy_list')
+    return redirect('dashboard')
