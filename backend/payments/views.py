@@ -5,26 +5,25 @@ import random
 import string
 
 @login_required
-def process_payment(request):
+def initiate_payment(request):
     if request.method == 'POST':
         policy_type = request.POST.get('policy_type')
         
-        # Get policy price
+        # Get policy price (replace with your actual prices)
         prices = {
             'fire': 2,
             'theft': 2.5,
             'comprehensive': 6,
             'health': 5
         }
-        amount = prices.get(policy_type, 0)
         
-        # Create policy (import here to avoid circular import)
-        from policies.models import Policy
+        # Create policy record
         policy = Policy.objects.create(
             user=request.user,
             policy_type=policy_type,
-            is_active=True
+            is_active=False  # Will activate after payment
         )
+        
         
         # Create payment
         transaction_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
@@ -41,4 +40,4 @@ def process_payment(request):
         messages.success(request, f'Payment successful! Policy #{policy.id} activated.')
         return redirect('policy_list')
     
-    return redirect('policy_list')
+    return redirect('dashboard')
