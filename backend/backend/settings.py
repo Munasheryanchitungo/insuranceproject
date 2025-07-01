@@ -69,6 +69,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
+        engine='django.db.backends.postgresql',
+        conn_max_age=600
     )
 }
 
