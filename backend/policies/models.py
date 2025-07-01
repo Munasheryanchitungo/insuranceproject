@@ -16,7 +16,7 @@ class Policy(models.Model):
     is_active = models.BooleanField(default=True)
     
     class Meta:
-        app_label = 'policies'
+        verbose_name_plural = "Policies"
     
     def __str__(self):
         return f"{self.get_policy_type_display()} Policy"
