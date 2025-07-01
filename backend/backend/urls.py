@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
-from . import views
+
 
 def create_superuser(request):
     User = get_user_model()
