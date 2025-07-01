@@ -2,15 +2,15 @@
 {% load static %}
 
 {% block content %}
-<div class="hero-section text-center py-5" style="background: url('{% static 'images/bg-home.jpg' %}') no-repeat center center; background-size: cover;">
+<div class="hero-section text-center py-5" style="background: url('{% static 'backend/static/images/logo.jpg' %}') no-repeat center center; background-size: cover;">
     <!-- Logo with multiple fallback options -->
     <picture class="d-block mb-4">
         <!-- Try WebP first if available -->
-        <source srcset="{% static 'images/insuresmart-logo.webp' %}" type="image/webp">
+        <source srcset="{% static '/backend/staticimages/logo.webp' %}" type="image/webp">
         <!-- Fallback to PNG -->
-        <source srcset="{% static 'images/insuresmart-logo.png' %}" type="image/png">
+        <source srcset="{% static 'backend/static/images/logo.png' %}" type="image/png">
         <!-- Final fallback to JPG -->
-        <img src="{% static 'images/login-logo.jpg' %}" 
+        <img src="{% static 'backend/static/images/login-logo.jpg' %}" 
              alt="Shalom InsureSmart Logo"
              class="img-fluid"
              style="max-height: 120px; width: auto;"
