@@ -2,106 +2,68 @@
 {% load static %}
 
 {% block content %}
-<div class="dashboard-container">
-    <header class="dashboard-header">
-        <h1>Shalom InsureSmart</h1>
-        <h2>Hello, {{ user.first_name|default:user.username }}!</h2>
-        <p class="welcome-message">Welcome to your insurance dashboard</p>
-    </header>
-
-    <hr class="divider">
-
-    <section class="policies-section">
-        <h3>Your Active Policies</h3>
-        
-        {% if active_policies %}
-        <ul class="policy-list">
-            {% for policy in active_policies %}
-            <li class="policy-item">
-                <span class="policy-name">{{ policy.get_policy_type_display }}</span>
-                <span class="policy-status active">Active</span>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p class="no-policies">No active policies.</p>
-        {% endif %}
-        
-        <a href="{% url 'policy_list' %}" class="btn add-policy-btn">Add Policy</a>
-    </section>
-
-    <hr class="divider">
-
-    <section class="claim-section">
-        <h3>Submit Claim</h3>
-        <p class="claim-instruction">File a claim for your active policies</p>
-        {% if policies_exist %}
-        <a href="{% url 'submit_claim' %}" class="btn claim-btn">Start Claim</a>
-        {% else %}
-        <p class="no-claim">You need active policies to file a claim</p>
-        {% endif %}
-    </section>
+<div class="dashboard-header mb-5">
+    <h2>Hello, {{ user.username }}!</h2>
+    <p class="text-muted">Welcome to your insurance dashboard</p>
 </div>
 
-<style>
-    .dashboard-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        font-family: Arial, sans-serif;
-    }
-    
-    .dashboard-header {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    
-    .divider {
-        border: 0;
-        height: 1px;
-        background: #ddd;
-        margin: 30px 0;
-    }
-    
-    .policy-list {
-        list-style: none;
-        padding: 0;
-    }
-    
-    .policy-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 12px 0;
-        border-bottom: 1px solid #eee;
-    }
-    
-    .policy-status {
-        color: #28a745;
-        font-weight: bold;
-    }
-    
-    .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        margin-top: 15px;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: bold;
-    }
-    
-    .add-policy-btn {
-        background-color: #007bff;
-        color: white;
-    }
-    
-    .claim-btn {
-        background-color: #28a745;
-        color: white;
-    }
-    
-    .no-policies, .no-claim {
-        color: #6c757d;
-        font-style: italic;
-    }
-</style>
+<div class="row">
+    <!-- Active Policies Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <h5>Your Active Policies</h5>
+            </div>
+            <div class="card-body">
+                {% if user.policy_set.all %}
+                <ul class="list-group">
+                    {% for policy in user.policy_set.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ policy.get_policy_type_display }}
+                        <span class="badge bg-{% if policy.is_active %}success{% else %}warning{% endif %}">
+                            {% if policy.is_active %}Active{% else %}Expired{% endif %}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No active policies. <a href="{% url 'policy_list' %}">Get coverage now!</a></p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'policy_list' %}" class="btn btn-primary btn-sm">Add Policy</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Claim Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white">
+                <h5>Submit Claim</h5>
+            </div>
+            <div class="card-body">
+                <p>File a claim for your active policies</p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'submit_claim' %}" class="btn btn-success btn-sm">Start Claim</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-info text-white">
+                <h5>Help & Support</h5>
+            </div>
+            <div class="card-body">
+                <p>Need assistance? Contact our team</p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'support' %}" class="btn btn-info btn-sm">Get Help</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
