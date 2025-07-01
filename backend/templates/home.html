@@ -1,21 +1,17 @@
-{{% extends "base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block content %}
-<div class="hero-section text-center py-5" style="background: url('{% static 'backend/static/images/logo.jpg' %}') no-repeat center center; background-size: cover;">
-    <!-- Logo with multiple fallback options -->
-    <picture class="d-block mb-4">
-        <!-- Try WebP first if available -->
-        <source srcset="{% static '/backend/staticimages/logo.webp' %}" type="image/webp">
-        <!-- Fallback to PNG -->
-        <source srcset="{% static 'backend/static/images/logo.png' %}" type="image/png">
-        <!-- Final fallback to JPG -->
-        <img src="{% static 'backend/static/images/login-logo.jpg' %}" 
+<div class="hero-section text-center py-5" style="background: url('https://i.ibb.co/HL3YhBGs/construction-news.webp') no-repeat center center; background-size: cover; background-color: #f8f9fa;">
+    <!-- Main Logo with Triple Fallback -->
+    <div class="logo-container mb-4">
+        <!-- 1st Try: ImgBB JPG -->
+        <img src="https://i.ibb.co/RT8YyVsJ/login-logo.jpg" 
              alt="Shalom InsureSmart Logo"
-             class="img-fluid"
-             style="max-height: 120px; width: auto;"
-             onerror="this.src='{% static 'images/pic-1.png' %}'">
-    </picture>
+             class="img-fluid main-logo"
+             style="max-height: 120px; width: auto; border: 2px solid transparent;"
+             onerror="this.src='{% static 'backend/static/images/login-logo.jpg' %}'">
+    </div>
 
     <h1 class="display-4 text-white bg-dark bg-opacity-75 d-inline-block px-3 py-2 rounded">Welcome to Shalom InsureSmart</h1>
     <p class="lead text-white bg-dark bg-opacity-75 d-inline-block px-2 rounded">Affordable micro insurance for everyday traders</p>
@@ -29,4 +25,30 @@
 <div class="container my-5">
     <!-- Your content sections -->
 </div>
+
+<style>
+    /* Ensures logo visibility */
+    .main-logo {
+        transition: all 0.3s;
+        background: white;
+        padding: 8px;
+        border-radius: 8px;
+    }
+    .main-logo:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+</style>
+
+<script>
+    // Final emergency fallback
+    document.addEventListener('DOMContentLoaded', function() {
+        const logo = document.querySelector('.main-logo');
+        // Check if image loaded successfully
+        if (logo.naturalWidth === 0) {
+            logo.src = "{% static 'backend/static/images/pic-1.png' %}";
+            logo.style.border = "2px solid red";
+        }
+    });
+</script>
 {% endblock %}
