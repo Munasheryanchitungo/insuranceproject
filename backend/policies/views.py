@@ -8,6 +8,14 @@ from .models import Policy
 from datetime import datetime, timedelta
 
 @login_required
+@login_required
+def dashboard(request):
+    active_policies = request.user.policy_set.filter(is_active=True)
+    return render(request, 'dashboard.html', {
+        'active_policies': active_policies  # This matches your template
+    })
+    
+    
 def policy_list(request):
     policies = [
         {'type': 'fire', 'name': 'Fire Cover', 'price': 2},
